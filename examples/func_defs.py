@@ -1,4 +1,4 @@
-#-----------------------------------------------------------------
+# -----------------------------------------------------------------
 # pycparser: func_defs.py
 #
 # Using pycparser for printing out all the functions defined in a
@@ -9,8 +9,7 @@
 #
 # Copyright (C) 2008-2011, Eli Bendersky
 # License: BSD
-#-----------------------------------------------------------------
-from __future__ import print_function
+# -----------------------------------------------------------------
 import sys
 
 # This is not required if you've installed pycparser into
@@ -18,7 +17,7 @@ import sys
 #
 sys.path.extend(['.', '..'])
 
-from pycparser import c_parser, c_ast, parse_file
+from pycparser import c_ast, parse_file
 
 
 # A simple visitor for FuncDef nodes that prints the names and
@@ -41,11 +40,8 @@ def show_func_defs(filename):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        filename  = sys.argv[1]
+        filename = sys.argv[1]
     else:
         filename = 'c_files/memmgr.c'
 
     show_func_defs(filename)
-
-
-

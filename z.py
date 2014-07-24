@@ -1,7 +1,5 @@
-import sys
-from pycparser.c_ast import *
-from pycparser.c_parser import CParser, Coord, ParseError
-from pycparser.c_lexer import CLexer
+from pycparser import c_ast
+from pycparser.c_parser import CParser
 
 
 def expand_decl(decl):
@@ -9,43 +7,45 @@ def expand_decl(decl):
     """
     typ = type(decl)
 
-    if typ == TypeDecl:
+    if typ == c_ast.TypeDecl:
         return ['TypeDecl', expand_decl(decl.type)]
-    elif typ == IdentifierType:
+    elif typ == c_ast.IdentifierType:
         return ['IdentifierType', decl.names]
-    elif typ == ID:
+    elif typ == c_ast.ID:
         return ['ID', decl.name]
-    elif typ in [Struct, Union]:
+    elif typ in [c_ast.Struct, c_ast.Union]:
         decls = [expand_decl(d) for d in decl.decls or []]
         return [typ.__name__, decl.name, decls]
     else:
         nested = expand_decl(decl.type)
 
-        if typ == Decl:
+        if typ == c_ast.Decl:
             if decl.quals:
                 return ['Decl', decl.quals, decl.name, nested]
             else:
                 return ['Decl', decl.name, nested]
-        elif typ == Typename: # for function parameters
+        elif typ == c_ast.Typename:  # for function parameters
             if decl.quals:
                 return ['Typename', decl.quals, nested]
             else:
                 return ['Typename', nested]
-        elif typ == ArrayDecl:
+        elif typ == c_ast.ArrayDecl:
             dimval = decl.dim.value if decl.dim else ''
             return ['ArrayDecl', dimval, nested]
-        elif typ == PtrDecl:
+        elif typ == c_ast.PtrDecl:
             return ['PtrDecl', nested]
-        elif typ == Typedef:
+        elif typ == c_ast.Typedef:
             return ['Typedef', decl.name, nested]
-        elif typ == FuncDecl:
+        elif typ == c_ast.FuncDecl:
             if decl.args:
                 params = [expand_decl(param) for param in decl.args.params]
             else:
                 params = []
             return ['FuncDecl', params, nested]
 
-#-----------------------------------------------------------------
+# -----------------------------------------------------------------
+
+
 class NodeVisitor(object):
     def __init__(self):
         self.current_parent = None

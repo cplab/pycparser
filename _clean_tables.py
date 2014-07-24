@@ -1,9 +1,10 @@
 # Cleanup all table and PYC files to ensure no PLY stuff is cached
 #
 import fnmatch
-import os, shutil
+import os
 
 file_patterns = ('yacctab.*', 'lextab.*', '*.pyc')
+
 
 def do_cleanup(root):
     for path, dirs, files in os.walk(root):
@@ -19,6 +20,3 @@ def do_cleanup(root):
 
 if __name__ == "__main__":
     do_cleanup('.')
-
-
-    

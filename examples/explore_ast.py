@@ -1,4 +1,4 @@
-#-----------------------------------------------------------------
+# -----------------------------------------------------------------
 # pycparser: explore_ast.py
 #
 # This example demonstrates how to "explore" the AST created by
@@ -11,8 +11,7 @@
 #
 # Copyright (C) 2008-2013, Eli Bendersky
 # License: BSD
-#-----------------------------------------------------------------
-from __future__ import print_function
+# -----------------------------------------------------------------
 import sys
 
 # This is not required if you've installed pycparser into
@@ -20,7 +19,7 @@ import sys
 #
 sys.path.extend(['.', '..'])
 
-from pycparser import c_parser, c_ast
+from pycparser import c_parser
 
 # This is some C source to parse. Note that pycparser must begin
 # at the top level of the C file, i.e. with either declarations
@@ -67,7 +66,7 @@ ast = parser.parse(text, filename='<none>')
 # created by pycparser. See the c_ast.py file for the options you
 # can pass it.
 #
-#~ ast.show()
+ast.show()
 
 # OK, we've seen that the top node is FileAST. This is always the
 # top node of the AST. Its children are "external declarations",
@@ -80,7 +79,7 @@ ast = parser.parse(text, filename='<none>')
 # definition is the third child, it's ext[2]. Uncomment the
 # following line to show it:
 #
-#~ ast.ext[2].show()
+ast.ext[2].show()
 
 # A FuncDef consists of a declaration, a list of parameter
 # declarations (for K&R style function definitions), and a body.
@@ -91,15 +90,15 @@ function_decl = ast.ext[2].decl
 # function_decl, like any other declaration, is a Decl. Its type child
 # is a FuncDecl, which has a return type and arguments stored in a
 # ParamList node
-#~ function_decl.type.show()
-#~ function_decl.type.args.show()
+function_decl.type.show()
+function_decl.type.args.show()
 
 # The following displays the name and type of each argument:
 #
-#~ for param_decl in function_decl.type.args.params:
-    #~ print('Arg name: %s' % param_decl.name)
-    #~ print('Type:')
-    #~ param_decl.type.show(offset=6)
+for param_decl in function_decl.type.args.params:
+    print('Arg name: %s' % param_decl.name)
+    print('Type:')
+    param_decl.type.show(offset=6)
 
 # The body is of FuncDef is a Compound, which is a placeholder for a block
 # surrounded by {} (You should be reading _c_ast.cfg parallel to this
@@ -111,8 +110,8 @@ function_body = ast.ext[2].body
 # The following displays the declarations and statements in the function
 # body
 #
-#~ for decl in function_body.block_items:
-    #~ decl.show()
+for decl in function_body.block_items:
+    decl.show()
 
 # We can see a single variable declaration, i, declared to be a simple type
 # declaration of type 'unsigned int', followed by statements.
@@ -120,7 +119,7 @@ function_body = ast.ext[2].body
 # block_items is a list, so the third element is the For statement:
 #
 for_stmt = function_body.block_items[2]
-#~ for_stmt.show()
+for_stmt.show()
 
 # As you can see in _c_ast.cfg, For's children are 'init, cond,
 # next' for the respective parts of the 'for' loop specifier,
@@ -130,22 +129,22 @@ for_stmt = function_body.block_items[2]
 # Let's dig deeper, to the while statement inside the for loop:
 #
 while_stmt = for_stmt.stmt.block_items[1]
-#~ while_stmt.show()
+while_stmt.show()
 
 # While is simpler, it only has a condition node and a stmt node.
 # The condition:
 #
 while_cond = while_stmt.cond
-#~ while_cond.show()
+while_cond.show()
 
 # Note that it's a BinaryOp node - the basic constituent of
 # expressions in our AST. BinaryOp is the expression tree, with
 # left and right nodes as children. It also has the op attribute,
 # which is just the string representation of the operator.
 #
-#~ print while_cond.op
-#~ while_cond.left.show()
-#~ while_cond.right.show()
+print while_cond.op
+while_cond.left.show()
+while_cond.right.show()
 
 #
 # That's it for the example. I hope you now see how easy it is to explore the
@@ -154,8 +153,5 @@ while_cond = while_stmt.cond
 # parser/compiler designer has to cope with.
 # Using the tools provided by the c_ast package it's easy to explore the
 # structure of AST nodes and write code that processes them.
-# Specifically, see the cdecl.py example for a non-trivial demonstration of what
-# you can do by recursively going through the AST.
-#
-
-
+# Specifically, see the cdecl.py example for a non-trivial demonstration of
+# what you can do by recursively going through the AST.

@@ -1,4 +1,4 @@
-#-----------------------------------------------------------------
+# -----------------------------------------------------------------
 # pycparser: func_defs.py
 #
 # Using pycparser for printing out all the calls of some function
@@ -6,7 +6,7 @@
 #
 # Copyright (C) 2008-2011, Eli Bendersky
 # License: BSD
-#-----------------------------------------------------------------
+# -----------------------------------------------------------------
 from __future__ import print_function
 import sys
 
@@ -15,7 +15,7 @@ import sys
 #
 sys.path.extend(['.', '..'])
 
-from pycparser import c_parser, c_ast, parse_file
+from pycparser import c_ast, parse_file
 
 
 # A visitor with some state information (the funcname it's
@@ -27,8 +27,7 @@ class FuncCallVisitor(c_ast.NodeVisitor):
 
     def visit_FuncCall(self, node):
         if node.name.name == self.funcname:
-            print('%s called at %s' % (
-                    self.funcname, node.name.coord))
+            print('%s called at %s' % (self.funcname, node.name.coord))
 
 
 def show_func_calls(filename, funcname):

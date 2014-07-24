@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 try:
     from setuptools import setup
     from setuptools.command.install import install as _install
@@ -46,12 +47,9 @@ setup(
     author_email='eliben@gmail.com',
     url='https://github.com/eliben/pycparser',
     platforms='Cross Platform',
-    classifiers = [
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 3',],
+    classifiers=[
+        'Programming Language :: Python :: 3', ],
     packages=['pycparser', 'pycparser.ply'],
     package_data={'pycparser': ['*.cfg']},
     cmdclass={'install': install, 'sdist': sdist},
 )
-
-
